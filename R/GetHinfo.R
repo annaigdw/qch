@@ -129,7 +129,7 @@ GetH1AtLeast <- function(Hconfig,AtLeast,Consecutive=FALSE,SameSign=FALSE){
 #' @return A vector 'Hconfig.H1' of components of Hconfig that correspond to the 'Equal' specification.
 #'
 #' @examples
-#' GetH1AtEqual(GetHconfig(4),2)
+#' GetH1Equal(GetHconfig(4),2)
 #'
 #' @seealso [GetH1AtLeast()]
 #'

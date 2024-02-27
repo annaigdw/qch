@@ -22,7 +22,21 @@ Description: Provides functions for the joint analysis of K sets of
     formulation, inferring the null distribution and testing the null
     hypothesis).
 License: GPL-3
-Depends: R (>= 2.10)
+Depends: 
+    R (>= 2.10)
+Imports: 
+    copula,
+    dplyr,
+    graphics,
+    ks,
+    purrr,
+    qvalue,
+    stats,
+    stringr,
+    utils
+LinkingTo: 
+    Rcpp,
+    RcppArmadillo
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
