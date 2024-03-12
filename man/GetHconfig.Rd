@@ -2,20 +2,20 @@
 % Please edit documentation in R/GetHinfo.R
 \name{GetHconfig}
 \alias{GetHconfig}
-\title{Generate H0/H1 configurations.}
+\title{Generate the \eqn{H_0}/\eqn{H_1} configurations.}
 \usage{
 GetHconfig(Q, Signed = FALSE)
 }
 \arguments{
 \item{Q}{The number of test series to be combined.}
 
-\item{Signed}{Should the sign of the effect be taken into account? (optional, default is FALSE).}
+\item{Signed}{Should the sign of the effect be taken into account? (optional, default is \code{FALSE}).}
 }
 \value{
-A list 'Hconfig' of all possible combination of H0 and H1 hypotheses among Q hypotheses tested.
+A list '\code{Hconfig}' of all possible combination of \eqn{H_0} and \eqn{H_1} hypotheses among \eqn{Q} hypotheses tested.
 }
 \description{
-Generate H0/H1 configurations.
+Generate all possible combination of simple hypotheses \eqn{H_0}/\eqn{H_1}.
 }
 \examples{
 GetHconfig(4)
