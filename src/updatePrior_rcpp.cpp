@@ -8,17 +8,16 @@
 using namespace Rcpp;
 
 
- //' Computation of the sum sum_c(w_c*psi_c) parallelized version
- //'@param  Hconfig list of  vector of 0 and 1, corresponding to the configurations
- //'@param  NewPrior a double vector containing the prior w_c
- //'@param  Logf0Mat a double matrix containing the log(f0(xi_q)) 
- //'@param  Logf1Mat a double matrix containing the log(f1(xi_q)) 
- //'@param  threads_nb an int the number of threads
- //'@return a double vector containing sum_c(w_c*psi_c)
- //'
- 
- // [[Rcpp::export]]
- arma::vec fHconfig_sum_update_ptr_parallel(const List & Hconfig,
+//' Computation of the sum sum_c(w_c*psi_c) parallelized version
+//'@param  Hconfig list of  vector of 0 and 1, corresponding to the configurations
+//'@param  NewPrior a double vector containing the prior w_c
+//'@param  Logf0Mat a double matrix containing the log(f0(xi_q)) 
+//'@param  Logf1Mat a double matrix containing the log(f1(xi_q)) 
+//'@param  threads_nb an int the number of threads
+//'@return a double vector containing sum_c(w_c*psi_c)
+//'
+// [[Rcpp::export]]
+arma::vec fHconfig_sum_update_ptr_parallel(const List & Hconfig,
                                    const arma::vec & NewPrior,
                                    const arma::mat & Logf0Mat,
                                    const arma::mat & Logf1Mat,
@@ -100,15 +99,15 @@ using namespace Rcpp;
 
 
  
- //' Update of the prior estimate in EM algo parallelized version
- //'@param  Hconfig list of  vector of 0 and 1, corresponding to the configurations
- //'@param  fHconfig_sum a double vector containing sum_c(w_c*psi_c), obtained by fHconfig_sum_update_ptr_parallel()
- //'@param  OldPrior a double vector containing the prior w_c 
- //'@param  Logf0Mat a double matrix containing the log(f0(xi_q)) 
- //'@param  Logf1Mat a double matrix containing the log(f1(xi_q)) 
- //'@param  threads_nb an int the number of threads
- //'@return a double vector containing the new estimate of prior w_c
- //'
+//' Update of the prior estimate in EM algo parallelized version
+//'@param  Hconfig list of  vector of 0 and 1, corresponding to the configurations
+//'@param  fHconfig_sum a double vector containing sum_c(w_c*psi_c), obtained by fHconfig_sum_update_ptr_parallel()
+//'@param  OldPrior a double vector containing the prior w_c 
+//'@param  Logf0Mat a double matrix containing the log(f0(xi_q)) 
+//'@param  Logf1Mat a double matrix containing the log(f1(xi_q)) 
+//'@param  threads_nb an int the number of threads
+//'@return a double vector containing the new estimate of prior w_c
+//'
 // [[Rcpp::export]]
 arma::vec prior_update_arma_ptr_parallel(const List & Hconfig,
                                      const arma::vec & fHconfig_sum,
@@ -231,20 +230,20 @@ arma::vec prior_update_arma_ptr_parallel(const List & Hconfig,
 }
  
  
- //' Computation of the sum sum_c(w_c*psi_c) using Gaussian copula parallelized version
- //'@param  Hconfig list of  vector of 0 and 1, corresponding to the configurations
- //'@param  NewPrior a double vector containing the prior w_c
- //'@param  Logf0Mat a double matrix containing the log(f0(xi_q)) 
- //'@param  Logf1Mat a double matrix containing the log(f1(xi_q)) 
- //'@param  zeta0 a double matrix containing the qnorm(F0(x_iq))
- //'@param  zeta1 a double matrix containing the qnorm(F1(x_iq))
- //'@param  R a double matrix corresponding to the copula parameter
- //'@param  Rinv a double matrix corresponding to the inverse copula parameter
- //'@param  threads_nb an int the number of threads
- //'@return a double vector containing sum_c(w_c*psi_c)
- //'
- // [[Rcpp::export]]
- arma::vec fHconfig_sum_update_gaussian_copula_ptr_parallel(const List & Hconfig,
+//' Computation of the sum sum_c(w_c*psi_c) using Gaussian copula parallelized version
+//'@param  Hconfig list of  vector of 0 and 1, corresponding to the configurations
+//'@param  NewPrior a double vector containing the prior w_c
+//'@param  Logf0Mat a double matrix containing the log(f0(xi_q)) 
+//'@param  Logf1Mat a double matrix containing the log(f1(xi_q)) 
+//'@param  zeta0 a double matrix containing the qnorm(F0(x_iq))
+//'@param  zeta1 a double matrix containing the qnorm(F1(x_iq))
+//'@param  R a double matrix corresponding to the copula parameter
+//'@param  Rinv a double matrix corresponding to the inverse copula parameter
+//'@param  threads_nb an int the number of threads
+//'@return a double vector containing sum_c(w_c*psi_c)
+//'
+// [[Rcpp::export]]
+arma::vec fHconfig_sum_update_gaussian_copula_ptr_parallel(const List & Hconfig,
                                                             const arma::vec & NewPrior,
                                                             const arma::mat & Logf0Mat,
                                                             const arma::mat & Logf1Mat,
@@ -349,21 +348,21 @@ return fHconfig_sum;
  
  
  
- //' Update of the prior estimate in EM algo using Gaussian copula, parallelized version
- //'@param  Hconfig list of  vector of 0 and 1, corresponding to the configurations
- //'@param  fHconfig_sum a double vector containing sum_c(w_c*psi_c), obtained by fHconfig_sum_update_ptr_parallel()
- //'@param  OldPrior a double vector containing the prior w_c 
- //'@param  Logf0Mat a double matrix containing the log(f0(xi_q)) 
- //'@param  Logf1Mat a double matrix containing the log(f1(xi_q))
- //'@param  zeta0 a double matrix containing the qnorm(F0(x_iq))
- //'@param  zeta1 a double matrix containing the qnorm(F1(x_iq))
- //'@param  R a double matrix corresponding to the copula parameter
- //'@param  Rinv a double matrix corresponding to the inverse copula parameter 
- //'@param  threads_nb an int the number of threads
- //'@return a double vector containing the new estimate of prior w_c
- //'
- // [[Rcpp::export]]
- arma::vec prior_update_gaussian_copula_ptr_parallel(const List & Hconfig,
+//' Update of the prior estimate in EM algo using Gaussian copula, parallelized version
+//'@param  Hconfig list of  vector of 0 and 1, corresponding to the configurations
+//'@param  fHconfig_sum a double vector containing sum_c(w_c*psi_c), obtained by fHconfig_sum_update_ptr_parallel()
+//'@param  OldPrior a double vector containing the prior w_c 
+//'@param  Logf0Mat a double matrix containing the log(f0(xi_q)) 
+//'@param  Logf1Mat a double matrix containing the log(f1(xi_q))
+//'@param  zeta0 a double matrix containing the qnorm(F0(x_iq))
+//'@param  zeta1 a double matrix containing the qnorm(F1(x_iq))
+//'@param  R a double matrix corresponding to the copula parameter
+//'@param  Rinv a double matrix corresponding to the inverse copula parameter 
+//'@param  threads_nb an int the number of threads
+//'@return a double vector containing the new estimate of prior w_c
+//'
+// [[Rcpp::export]]
+arma::vec prior_update_gaussian_copula_ptr_parallel(const List & Hconfig,
                                                      const arma::vec & fHconfig_sum,
                                                      const arma::vec & OldPrior,
                                                      const arma::mat & Logf0Mat,
@@ -470,22 +469,21 @@ return fHconfig_sum;
 return NewPrior;
  }
  
- //' Update the estimate of R correlation matrix of the gaussian copula, parallelized version 
- //'@param  Hconfig list of vector of 0 and 1, corresponding to the configurations
- //'@param  fHconfig_sum a double vector containing sum_c(w_c*psi_c), obtained by fHconfig_sum_update_ptr_parallel()
- //'@param  OldPrior a double vector containing the prior w_c 
- //'@param  Logf0Mat a double matrix containing the log(f0(xi_q)) 
- //'@param  Logf1Mat a double matrix containing the log(f1(xi_q))
- //'@param  zeta0 a double matrix containing the qnorm(F0(x_iq))
- //'@param  zeta1 a double matrix containing the qnorm(F1(x_iq))
- //'@param  OldR a double matrix corresponding to the copula parameter
- //'@param  OldRinv a double matrix corresponding to the inverse copula parameter 
- //'@param  RhoIndex a int matrix containing the index of lower triangular part of a matrix
- //'@param  threads_nb an int the number of threads
- //'@return a double vector containing the lower triangular part of the MLE of R
-
- // [[Rcpp::export]]
- arma::mat R_MLE_update_gaussian_copula_ptr_parallel(const List & Hconfig,
+//' Update the estimate of R correlation matrix of the gaussian copula, parallelized version 
+//'@param  Hconfig list of vector of 0 and 1, corresponding to the configurations
+//'@param  fHconfig_sum a double vector containing sum_c(w_c*psi_c), obtained by fHconfig_sum_update_ptr_parallel()
+//'@param  OldPrior a double vector containing the prior w_c 
+//'@param  Logf0Mat a double matrix containing the log(f0(xi_q)) 
+//'@param  Logf1Mat a double matrix containing the log(f1(xi_q))
+//'@param  zeta0 a double matrix containing the qnorm(F0(x_iq))
+//'@param  zeta1 a double matrix containing the qnorm(F1(x_iq))
+//'@param  OldR a double matrix corresponding to the copula parameter
+//'@param  OldRinv a double matrix corresponding to the inverse copula parameter 
+//'@param  RhoIndex a int matrix containing the index of lower triangular part of a matrix
+//'@param  threads_nb an int the number of threads
+//'@return a double vector containing the lower triangular part of the MLE of R
+// [[Rcpp::export]]
+arma::mat R_MLE_update_gaussian_copula_ptr_parallel(const List & Hconfig,
                                                      const arma::vec & fHconfig_sum,
                                                      const arma::vec & OldPrior,
                                                      const arma::mat & Logf0Mat,

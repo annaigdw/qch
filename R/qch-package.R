@@ -14,5 +14,7 @@
 "_PACKAGE"
 
 ## usethis namespace: start
+#' @importFrom Rcpp sourceCpp
+#' @useDynLib qch, .registration = TRUE
 ## usethis namespace: end
 NULL

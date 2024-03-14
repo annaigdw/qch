@@ -29,6 +29,7 @@ Imports:
     ks,
     purrr,
     qvalue,
+    Rcpp,
     stats,
     stringr,
     utils
