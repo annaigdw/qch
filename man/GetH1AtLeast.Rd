@@ -20,7 +20,7 @@ A vector '\code{Hconfig.H1}' of components of \code{Hconfig} that correspond to 
 }
 \description{
 Specify which configurations among \code{Hconfig} correspond
-to the composite alternative hypothesis :{at least "\code{AtLeast}" \eqn{H_1} hypotheses are of interest }
+to the composite alternative hypothesis : \{at least "\code{AtLeast}" \eqn{H_1} hypotheses are of interest \}
 }
 \examples{
 GetH1AtLeast(GetHconfig(4),2)

@@ -5,7 +5,7 @@ Authors@R: c(
     person("Tristan", "Mary-Huard", , "tristan.mary-huard@agroparistech.fr", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-3839-9067")),
     person("Annaig", "De walsche", , "annaig.de-walsche@inrae.fr", role = "aut",
-           comment = c(ORCID = "0000-0003-0603-1716 "))
+           comment = c(ORCID = "0000-0003-0603-1716"))
   )
 Maintainer: Tristan Mary-Huard <tristan.mary-huard@agroparistech.fr>
 Description: Provides functions for the joint analysis of \eqn{Q} sets of
@@ -13,12 +13,13 @@ Description: Provides functions for the joint analysis of \eqn{Q} sets of
     performed by querying a composite hypothesis, i.e. an arbitrary
     complex combination of simple hypotheses, as described in Mary-Huard
     et al. (2021) <doi:10.1093/bioinformatics/btab592> and De Walsche et
-    al.(2023).  In this approach, the \eqn{Q}-uplet of p-values associated
-    with each item is distributed as a multivariate mixture, where each of
-    the \eqn{2^Q} components corresponds to a specific combination of
-    simple hypotheses.  The dependence between the p-value series is
-    considered using a Gaussian copula function.  A p-value for the
-    composite hypothesis test is derived from the posterior probabilities.
+    al.(2023) <doi:10.1101/2024.03.17.585412>.  In this approach, the
+    \eqn{Q}-uplet of p-values associated with each item is distributed as
+    a multivariate mixture, where each of the \eqn{2^Q} components
+    corresponds to a specific combination of simple hypotheses. The
+    dependence between the p-value series is considered using a Gaussian
+    copula function.  A p-value for the composite hypothesis test is
+    derived from the posterior probabilities.
 License: GPL-3
 Depends: 
     R (>= 2.10)
