@@ -57,7 +57,7 @@ GetH1AtLeast <- function(Hconfig,AtLeast,Consecutive=FALSE,SameSign=FALSE){
   ## Unsigned case
   if(sum(stringr::str_detect(names(Hconfig),pattern = "\\+"))==0){
     if(!Consecutive){
-      Hconfig.H1 <- sapply(AtLeast, function(atleast){
+      Hconfig.H1 <- map(AtLeast, function(atleast){
         ## Find the ones that match H1
         Matching.H1 <- sapply(Hconfig, function(h){sum(h)>=atleast})
         Hconfig.H1 <- which(Matching.H1)
@@ -65,7 +65,7 @@ GetH1AtLeast <- function(Hconfig,AtLeast,Consecutive=FALSE,SameSign=FALSE){
       })
       names(Hconfig.H1) <- paste0("AtLeast_",AtLeast)
     }else{
-      Hconfig.H1 <- sapply(AtLeast, function(atleast){
+      Hconfig.H1 <- map(AtLeast, function(atleast){
         ## Find the ones that match H1
         Consec <- paste(rep(1,atleast),collapse='/')
         Hconfig.H1 <- grep(pattern = Consec,x = names(Hconfig))
@@ -78,7 +78,7 @@ GetH1AtLeast <- function(Hconfig,AtLeast,Consecutive=FALSE,SameSign=FALSE){
   }else{
     if(!Consecutive){
       if(SameSign){
-        Hconfig.H1 <- sapply(AtLeast, function(atleast){
+        Hconfig.H1 <- map(AtLeast, function(atleast){
           ## Find the ones that match H1
           Matching.H1 <-  sapply(Hconfig, function(h){sum(h=='-')>=atleast | sum(h=='+')>=atleast })
           Hconfig.H1 <- which(Matching.H1)
@@ -86,7 +86,7 @@ GetH1AtLeast <- function(Hconfig,AtLeast,Consecutive=FALSE,SameSign=FALSE){
         })
         names(Hconfig.H1) <- paste0("AtLeast_",AtLeast,"_SameSign")
       }else{
-        Hconfig.H1 <- sapply(AtLeast, function(atleast){
+        Hconfig.H1 <- map(AtLeast, function(atleast){
           ## Find the ones that match H1
           Matching.H1 <-  sapply(Hconfig, function(h){sum(h!=0)>=atleast})
           Hconfig.H1 <- which(Matching.H1)
@@ -96,7 +96,7 @@ GetH1AtLeast <- function(Hconfig,AtLeast,Consecutive=FALSE,SameSign=FALSE){
       }
     }else{
       if(SameSign){
-        Hconfig.H1 <- sapply(AtLeast,simplify = FALSE, function(atleast){
+        Hconfig.H1 <- map(AtLeast,simplify = FALSE, function(atleast){
           ## Find the ones that match H1
           Consec <- c(paste(rep("\\+",atleast),collapse='/'),paste(rep("-",atleast),collapse='/'))
           Hconfig.H1 <- sapply(Consec,simplify = FALSE, function(consec){grep(pattern = consec,x = names(Hconfig))}) %>% unlist() %>% unique()
@@ -105,7 +105,7 @@ GetH1AtLeast <- function(Hconfig,AtLeast,Consecutive=FALSE,SameSign=FALSE){
         })
         names(Hconfig.H1) <- paste0("AtLeast_",AtLeast,"_SameSign_Consecutive")
       }else{
-        Hconfig.H1 <- sapply(AtLeast, function(atleast){
+        Hconfig.H1 <- map(AtLeast, function(atleast){
           ## Find the ones that match H1
           Consec <- expand.grid(lapply(1:atleast, function(q) c("\\+","-"))) %>% as.matrix()
           Consec <- apply(Consec,MARGIN = 1,function(h){paste(h,collapse = "/")})
@@ -147,7 +147,7 @@ GetH1Equal <- function(Hconfig,Equal,Consecutive=FALSE,SameSign=FALSE){
   ## Unsigned case
   if(sum(stringr::str_detect(names(Hconfig),pattern = "\\+"))==0){
     if(!Consecutive){
-      Hconfig.H1 <- sapply(Equal, function(equal){
+      Hconfig.H1 <- map(Equal, function(equal){
         ## Find the ones that match H1
         Matching.H1 <- sapply(Hconfig, function(h){sum(h)==equal})
         Hconfig.H1 <- which(Matching.H1)
@@ -155,7 +155,7 @@ GetH1Equal <- function(Hconfig,Equal,Consecutive=FALSE,SameSign=FALSE){
       })
       names(Hconfig.H1) <- paste0("Equal_",Equal)
     }else{
-      Hconfig.H1 <- sapply(Equal, function(equal){
+      Hconfig.H1 <- map(Equal, function(equal){
         ## Find the ones that match H1
         Consec <- paste(rep(1,equal),collapse='/')
         Hconfig.H1 <- intersect(grep(pattern = Consec,x = names(Hconfig)),which(sapply(names(Hconfig), function(h){stringr::str_count(h,pattern = '1')==equal})))
@@ -168,7 +168,7 @@ GetH1Equal <- function(Hconfig,Equal,Consecutive=FALSE,SameSign=FALSE){
   }else{
     if(!Consecutive){
       if(SameSign){
-        Hconfig.H1 <- sapply(Equal, function(equal){
+        Hconfig.H1 <- map(Equal, function(equal){
           ## Find the ones that match H1
           Matching.H1 <-  sapply(Hconfig, function(h){sum(h=='-')==equal | sum(h=='+')==equal})
           Hconfig.H1 <- which(Matching.H1)
@@ -176,7 +176,7 @@ GetH1Equal <- function(Hconfig,Equal,Consecutive=FALSE,SameSign=FALSE){
         })
         names(Hconfig.H1) <- paste0("Equal_",Equal,"_SameSign")
       }else{
-        Hconfig.H1 <- sapply(Equal, function(equal){
+        Hconfig.H1 <- map(Equal, function(equal){
           ## Find the ones that match H1
           Matching.H1 <-  sapply(Hconfig, function(h){sum(h!=0)==equal})
           Hconfig.H1 <- which(Matching.H1)
@@ -186,7 +186,7 @@ GetH1Equal <- function(Hconfig,Equal,Consecutive=FALSE,SameSign=FALSE){
       }
     }else{
       if(SameSign){
-        Hconfig.H1 <- sapply(Equal, function(equal){
+        Hconfig.H1 <- map(Equal, function(equal){
           ## Find the ones that match H1
           Consec <- c(paste(rep("\\+",equal),collapse='/'),paste(rep("-",equal),collapse='/'))
           Matching.H1 <- c(grep(pattern = Consec[1],x = names(Hconfig)), grep(pattern = Consec[2],x = names(Hconfig))) %>% unique()
@@ -196,7 +196,7 @@ GetH1Equal <- function(Hconfig,Equal,Consecutive=FALSE,SameSign=FALSE){
         })
         names(Hconfig.H1) <- paste0("Equal_",Equal,"_SameSign_Consecutive")
       }else{
-        Hconfig.H1 <- sapply(Equal,simplify = FALSE, function(equal){
+        Hconfig.H1 <- map(Equal,simplify = FALSE, function(equal){
           ## Find the ones that match H1
           Consec <- expand.grid(lapply(1:equal, function(q) c("\\+","-"))) %>% as.matrix()
           Consec <- apply(Consec,MARGIN = 1,function(h){paste(h,collapse = "/")})

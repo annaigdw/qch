@@ -1,9 +1,11 @@
 #include <RcppArmadillo.h>
 #include <vector>
 #include <cmath> // std::exp()
+#ifdef _OPENMP
 #include <omp.h> // openMP
-// [[Rcpp::plugins(openmp)]]
-// [[Rcpp::depends(RcppArmadillo)]]
+#endif
+//[[Rcpp::plugins(openmp)]]
+//[[Rcpp::depends(RcppArmadillo)]]
 
 using namespace Rcpp;
 
@@ -26,7 +28,11 @@ arma::vec fHconfig_sum_update_ptr_parallel(const List & Hconfig,
    if(threads_nb < 0) threads_nb = 1;
    // The number of thread is set to the number of core available by default.
    // and limited to the number of core available if a higher number is asked.
+   #ifdef _OPENMP
    int max_threads_nb = omp_get_num_procs();
+   #else
+   int max_threads_nb = 1;
+   #endif
    if(threads_nb > max_threads_nb || threads_nb == 0) threads_nb = max_threads_nb;
 
    // Get the dimensions
@@ -120,7 +126,11 @@ arma::vec prior_update_arma_ptr_parallel(const List & Hconfig,
   if(threads_nb < 0) threads_nb = 1;
   // The number of thread is set to the number of core available by default.
   // and limited to the number of core available if a higher number is asked.
+  #ifdef _OPENMP
   int max_threads_nb = omp_get_num_procs();
+  #else
+  int max_threads_nb = 1;
+  #endif
   if(threads_nb > max_threads_nb || threads_nb == 0) threads_nb = max_threads_nb;
 
   // Get the dimensions
@@ -256,7 +266,11 @@ arma::vec fHconfig_sum_update_gaussian_copula_ptr_parallel(const List & Hconfig,
    if(threads_nb < 0) threads_nb = 1;
    // The number of thread is set to the number of core available by default.
    // and limited to the number of core available if a higher number is asked.
+   #ifdef _OPENMP
    int max_threads_nb = omp_get_num_procs();
+   #else
+   int max_threads_nb = 1;
+   #endif
    if(threads_nb > max_threads_nb || threads_nb == 0) threads_nb = max_threads_nb;
    
    // Get the dimensions
@@ -377,7 +391,11 @@ arma::vec prior_update_gaussian_copula_ptr_parallel(const List & Hconfig,
    if(threads_nb < 0) threads_nb = 1;
    // The number of thread is set to the number of core available by default.
    // and limited to the number of core available if a higher number is asked.
+   #ifdef _OPENMP
    int max_threads_nb = omp_get_num_procs();
+   #else
+   int max_threads_nb = 1;
+   #endif
    if(threads_nb > max_threads_nb || threads_nb == 0) threads_nb = max_threads_nb;
    
    // Get the dimensions
@@ -498,7 +516,11 @@ arma::mat R_MLE_update_gaussian_copula_ptr_parallel(const List & Hconfig,
    if(threads_nb < 0) threads_nb = 1;
    // The number of thread is set to the number of core available by default.
    // and limited to the number of core available if a higher number is asked.
+   #ifdef _OPENMP
    int max_threads_nb = omp_get_num_procs();
+   #else
+   int max_threads_nb = 1;
+   #endif
    if(threads_nb > max_threads_nb || threads_nb == 0) threads_nb = max_threads_nb;
    
    // Get the dimensions

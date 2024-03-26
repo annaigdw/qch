@@ -206,7 +206,7 @@ qch.fit <- function(pValMat,EffectMat=NULL,Hconfig,copula="indep",threads_nb=0, 
   
   # Copula parameters: Kendall's tau estimator
   if(copula=="gaussian"){
-    NewRho <- copula::fitCopula(copula = copula::normalCopula(dim = Q,dispstr="un"),data = pValMat[sample(1:n,size=1e4),],method="itau") %>% coef()
+    NewRho <- copula::fitCopula(copula = copula::normalCopula(dim = Q,dispstr="un"),data = pValMat[sample(1:n,size=min(1e4,n)),],method="itau") %>% coef()
     NewR <- copula::p2P(param = NewRho,d = Q)
   }
   
