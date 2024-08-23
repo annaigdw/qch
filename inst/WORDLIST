@@ -7,6 +7,8 @@ aut
 bioc
 bioinformatics
 btab
+cdf
+config
 cre
 ctb
 de
@@ -24,9 +26,10 @@ LazyData
 LinkingTo
 mary
 ORCID
+p-value
+p-values
 purrr
 PvalSets
-pvalues
 qch
 qvalue
 Rcpp
