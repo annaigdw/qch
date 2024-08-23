@@ -25,10 +25,10 @@ for each of p-value serie. \cr
 \code{tau} \tab the vector of \eqn{H_1} posteriors. \cr
 \code{f1} \tab a numeric vector, each coordinate \eqn{i}
 corresponding to the evaluation of the \eqn{H_1} density at point \eqn{x_i},
-where \eqn{x_i] is the \eqn{i}th item in \code{X}. \cr
+where \eqn{x_i} is the \eqn{i}th item in \code{X}. \cr
 \code{F1} \tab  a numeric vector, each coordinate \eqn{i}
 corresponding to the evaluation of the \eqn{H_1} cdf at point \eqn{x_i},
-where \eqn{x_i] is the \eqn{i}th item in \code{X}.
+where \eqn{x_i} is the \eqn{i}th item in \code{X}.
 }
 }
 \description{
