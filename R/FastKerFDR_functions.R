@@ -6,6 +6,10 @@ if (getRversion() >= "2.15.1") utils::globalVariables(c(".", ":=", ".x", ">"))
 ###################################################################
 #' FastKerFdr unsigned
 #'
+#' Kernel estimation of the density in a two-components mixture model
+#' where one component are a standard Gaussian density.
+#' Here we suppose that the density to estimate lives in \eqn{R^+}.
+#'
 #' @param X a vector of probit-transformed p-values (corresponding to a p-value serie)
 #' @param p0 a priori proportion of \eqn{H_0} hypotheses
 #' @param plotting boolean, should some diagnostic graphs be plotted. (Default is FALSE.)
@@ -117,6 +121,9 @@ FastKerFdr_unsigned <- function(X, p0 = NULL, plotting = FALSE, NbKnot = 1e5, to
 
 ###################################################################
 #' FastKerFdr signed
+#'
+#' Kernel estimation of the density in a two-components mixture model
+#' where one component are a standard Gaussian density.
 #'
 #' @param X a vector of probit-transformed p-values (corresponding to a p-value serie).
 #' @param p0 a priori proportion of \eqn{H_0} hypotheses.

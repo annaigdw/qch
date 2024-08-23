@@ -32,5 +32,6 @@ where \eqn{x_i] is the \eqn{i}th item in \code{X}.
 }
 }
 \description{
-FastKerFdr signed
+Kernel estimation of the density in a two-components mixture model
+where one component are a standard Gaussian density.
 }

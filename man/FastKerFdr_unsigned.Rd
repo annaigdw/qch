@@ -38,5 +38,7 @@ where \eqn{x_i] is the \eqn{i}th item in \code{X}.
 }
 }
 \description{
-FastKerFdr unsigned
+Kernel estimation of the density in a two-components mixture model
+where one component are a standard Gaussian density.
+Here we suppose that the density to estimate lives in \eqn{R^+}.
 }
