@@ -6,7 +6,7 @@
 \alias{qch-package}
 \title{qch: Query Composite Hypotheses}
 \description{
-Provides functions for the joint analysis of \eqn{Q} sets of p-values obtained for the same list of items. This joint analysis is performed by querying a composite hypothesis, i.e. an arbitrary complex combination of simple hypotheses, as described in Mary-Huard et al. (2021) \doi{10.1093/bioinformatics/btab592} and De Walsche et al.(2023) \doi{10.1101/2024.03.17.585412}. In this approach, the \eqn{Q}-uplet of p-values associated with each item is distributed as a multivariate mixture, where each of the \eqn{2^Q} components corresponds to a specific combination of simple hypotheses. The dependence between the p-value series is considered using a Gaussian copula function. A p-value for the composite hypothesis test is derived from the posterior probabilities.
+Provides functions for the joint analysis of Q sets of p-values obtained for the same list of items. This joint analysis is performed by querying a composite hypothesis, i.e. an arbitrary complex combination of simple hypotheses, as described in Mary-Huard et al. (2021) \doi{10.1093/bioinformatics/btab592} and De Walsche et al.(2023) \doi{10.1101/2024.03.17.585412}. In this approach, the Q-uplet of p-values associated with each item is distributed as a multivariate mixture, where each of the 2^Q components corresponds to a specific combination of simple hypotheses. The dependence between the p-value series is considered using a Gaussian copula function. A p-value for the composite hypothesis test is derived from the posterior probabilities.
 }
 \details{
 The main functions of the package \code{\link{GetHconfig}}, \code{\link{GetH1AtLeast}},
@@ -25,7 +25,12 @@ The main functions of the package \code{\link{GetHconfig}}, \code{\link{GetH1AtL
 
 Authors:
 \itemize{
-  \item Annaig De walsche \email{annaig.de-walsche@inrae.fr} (\href{https://orcid.org/0000-0003-0603-1716}{ORCID})
+  \item Annaig De Walsche \email{annaig.de-walsche@inrae.fr} (\href{https://orcid.org/0000-0003-0603-1716}{ORCID})
+}
+
+Other contributors:
+\itemize{
+  \item Franck Gauthier \email{franck.gauthier@inrae.fr} (\href{https://orcid.org/0000-0003-0574-065X}{ORCID}) [contributor]
 }
 
 }
