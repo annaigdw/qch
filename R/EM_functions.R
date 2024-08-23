@@ -112,7 +112,6 @@ EM_calibration_indep_memory <- function(Logf0Mat, Logf1Mat, Prior.init, Hconfig,
 #' \code{priorHconfig} \tab vector of estimated prior probabilities
 #' for each of the H-configurations.\cr
 #' \code{Rcopula} \tab the estimated correlation matrix of the Gaussian copula.
-#' (if applicable)
 #' }
 
 EM_calibration_gaussian <- function(Hconfig, F0Mat, F1Mat, fHconfig, R.init, Prior.init, Precision = 1e-6) {
@@ -175,7 +174,6 @@ EM_calibration_gaussian <- function(Hconfig, F0Mat, F1Mat, fHconfig, R.init, Pri
 #' \code{priorHconfig} \tab vector of estimated prior probabilities
 #' for each of the H-configurations.\cr
 #' \code{Rcopula} \tab the estimated correlation matrix of the Gaussian copula.
-#' (if applicable)
 #' }
 ##
 

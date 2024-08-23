@@ -41,7 +41,6 @@ A list with the following elements:
 \code{priorHconfig} \tab vector of estimated prior probabilities
 for each of the H-configurations.\cr
 \code{Rcopula} \tab the estimated correlation matrix of the Gaussian copula.
-(if applicable)
 }
 }
 \description{
