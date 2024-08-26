@@ -25,6 +25,7 @@ Description: Provides functions for the joint analysis of Q sets of
 License: GPL-3
 Depends: 
     R (>= 2.10)
+biocViews:
 Imports: 
     copula,
     dplyr,
