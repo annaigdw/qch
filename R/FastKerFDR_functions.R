@@ -15,6 +15,7 @@ if (getRversion() >= "2.15.1") utils::globalVariables(c(".", ":=", ".x", ">"))
 #' @param plotting boolean, should some diagnostic graphs be plotted. (Default is FALSE.)
 #' @param NbKnot The (maximum) number of knot for the \code{kde} procedure. (Default is 1e5.)
 #' @param tol a tolerance value for convergence. (Default is 1e-5.)
+#' @param max_iter the maximum number of iterations allowed for the algorithm to converge or complete its process.(Default is 1e4.)
 #' @import ks graphics stats
 #'
 #' @return A list with the following elements:
@@ -31,7 +32,7 @@ if (getRversion() >= "2.15.1") utils::globalVariables(c(".", ":=", ".x", ">"))
 #' }
 
 
-FastKerFdr_unsigned <- function(X, p0 = NULL, plotting = FALSE, NbKnot = 1e5, tol = 1e-5) {
+FastKerFdr_unsigned <- function(X, p0 = NULL, plotting = FALSE, NbKnot = 1e5, tol = 1e-5, max_iter = 1e4) {
   n <- length(X)
 
   ## Get a p0 estimate
@@ -51,11 +52,14 @@ FastKerFdr_unsigned <- function(X, p0 = NULL, plotting = FALSE, NbKnot = 1e5, to
     ActualNbKnot <- length(X)
     Counts <- rep(1, ActualNbKnot)
   }
+
   if (plotting) {
     Order <- order(Knots)
     Knots <- Knots[Order]
     Counts <- Counts[Order]
   }
+
+  h <- ks::hpi(X)
 
   ## Initialize the taus using GM
   phi <- dnorm(Knots)
@@ -65,16 +69,23 @@ FastKerFdr_unsigned <- function(X, p0 = NULL, plotting = FALSE, NbKnot = 1e5, to
   ## Get the weighted kernel density estimate
   diff <- 2 * tol
   iter <- 0
-  while (diff > tol) {
+  while (diff > tol & iter <= max_iter) {
     iter <- iter + 1
     weights <- tau * Counts
     weights <- ActualNbKnot * weights / sum(weights)
-    f1 <- ks::kde(x = Knots, w = weights, eval.points = Knots)$estimate
+
+    f1 <- ks::kde(x = Knots, w = weights, eval.points = Knots, h = h)$estimate
+    f1[f1 < 0] <- 0
+
     tauNew <- p1 * f1 / (p0 * phi + p1 * f1)
+
     ## Dirty job 1: get rid of the f1 mass on the left
     tauNew[Knots < -3] <- 0
     diff <- max(abs(tau - tauNew))
     tau <- tauNew
+  }
+  if (iter > max_iter & diff > tol) {
+    message(paste0("Warning: The algorithm did not converge within max_iter=", max_iter, "."))
   }
   if (plotting) {
     Hist.fig <- hist(X,
@@ -130,6 +141,7 @@ FastKerFdr_unsigned <- function(X, p0 = NULL, plotting = FALSE, NbKnot = 1e5, to
 #' @param plotting boolean, should some diagnostic graphs be plotted. (Default is FALSE.)
 #' @param NbKnot The (maximum) number of knot for the \code{kde} procedure. (Default is 1e5.)
 #' @param tol a tolerance value for convergence. (Default is 1e-5.)
+#' @param max_iter the maximum number of iterations allowed for the algorithm to converge or complete its process.(Default is 1e4.)
 #' @import ks graphics stats
 #'
 #' @return A list with the following elements:
@@ -145,7 +157,7 @@ FastKerFdr_unsigned <- function(X, p0 = NULL, plotting = FALSE, NbKnot = 1e5, to
 #' where \eqn{x_i} is the \eqn{i}th item in \code{X}.
 #' }
 
-FastKerFdr_signed <- function(X, p0 = NULL, plotting = FALSE, NbKnot = 1e5, tol = 1e-5) {
+FastKerFdr_signed <- function(X, p0 = NULL, plotting = FALSE, NbKnot = 1e5, tol = 1e-5, max_iter = 1e4) {
   X <- as.numeric(as.matrix(X))
   n <- length(X)
 
@@ -171,6 +183,7 @@ FastKerFdr_signed <- function(X, p0 = NULL, plotting = FALSE, NbKnot = 1e5, tol 
     Knots <- Knots[Order]
     Counts <- Counts[Order]
   }
+  h <- ks::hpi(X)
 
   ## Initialize the taus
   phi <- dnorm(Knots)
@@ -180,14 +193,18 @@ FastKerFdr_signed <- function(X, p0 = NULL, plotting = FALSE, NbKnot = 1e5, tol 
   ## Get the weighted kernel density estimate
   diff <- 2 * tol
   iter <- 0
-  while (diff > tol) {
+  while (diff > tol & iter <= max_iter) {
     iter <- iter + 1
     weights <- tau * Counts
     weights <- ActualNbKnot * weights / sum(weights)
-    f1 <- ks::kde(x = Knots, w = weights, eval.points = Knots)$estimate
+    f1 <- ks::kde(x = Knots, w = weights, eval.points = Knots, h = h)$estimate
+    f1[f1 < 0] <- 0
     tauNew <- p1 * f1 / (p0 * phi + p1 * f1)
     diff <- max(abs(tau - tauNew))
     tau <- tauNew
+  }
+  if (iter > max_iter & diff > tol) {
+    message(paste0("Warning: The algorithm did not converge within max_iter=", max_iter, "."))
   }
   if (plotting) {
     Hist.fig <- hist(X,

@@ -9,7 +9,8 @@ FastKerFdr_unsigned(
   p0 = NULL,
   plotting = FALSE,
   NbKnot = 1e+05,
-  tol = 1e-05
+  tol = 1e-05,
+  max_iter = 10000
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ FastKerFdr_unsigned(
 \item{NbKnot}{The (maximum) number of knot for the \code{kde} procedure. (Default is 1e5.)}
 
 \item{tol}{a tolerance value for convergence. (Default is 1e-5.)}
+
+\item{max_iter}{the maximum number of iterations allowed for the algorithm to converge or complete its process.(Default is 1e4.)}
 }
 \value{
 A list with the following elements:
