@@ -128,18 +128,38 @@ qch.test <- function(res.qch.fit, Hconfig, Hconfig.H1 = NULL, Alpha = 0.05, thre
     })
   }
 
+  Tau1_equals1_index.list <- map(Tau1.list, ~ which(.x == 1))
+  one_minus_Tau1equals1.list <- map(1:nb_test, ~ rowSums(res.qch.fit$posterior[Tau1_equals1_index.list[[.x]], -Hconfig.H1[[.x]], drop = FALSE]))
+
+
   Order.list <- map(1:nb_test, ~ order(Tau1.list[[.x]], decreasing = TRUE))
+  Order_lessthan1.list <- map(1:nb_test, ~ order(Tau1.list[[.x]][-Tau1_equals1_index.list[[.x]]], decreasing = TRUE))
+  Order_equals1.list <- map(1:nb_test, ~ order(one_minus_Tau1equals1.list[[.x]], decreasing = FALSE))
+
+
   FDR.list <- map(1:nb_test, ~ {
-    tmp <- (1:n) - cumsum(Tau1.list[[.x]][Order.list[[.x]]])
-    return(tmp / (1:n))
+    if (length(Tau1_equals1_index.list[[.x]]) > 0) {
+      tmp1 <- cumsum(one_minus_Tau1equals1.list[[.x]][Order_equals1.list[[.x]]])
+      tmp <- (1:(n - length(tmp1))) - cumsum(Tau1.list[[.x]][-Tau1_equals1_index.list[[.x]]][Order_lessthan1.list[[.x]]])
+      return(c(tmp1, tmp) / (1:n))
+    } else {
+      tmp <- (1:n) - cumsum(Tau1.list[[.x]][Order.list[[.x]]])
+      return(tmp / (1:n))
+    }
   })
+
 
   NbReject.vec <- map_int(1:nb_test, ~ max(which(FDR.list[[.x]] <= Alpha), 0))
 
   Rejection.mat <- map_dfc(1:nb_test, function(q) {
     Rejection <- rep(0, n)
     if (NbReject.vec[q] > 0) {
-      Rejection[Order.list[[q]][1:NbReject.vec[q]]] <- 1
+      if (length(Tau1_equals1_index.list[[q]]) > 0) {
+        Order_all <- c(Tau1_equals1_index.list[[q]][Order_equals1.list[[q]]], which(Tau1.list[[q]] < 1)[Order_lessthan1.list[[q]]])
+        Rejection[Order_all[1:NbReject.vec[q]]] <- 1
+      } else {
+        Rejection[Order.list[[q]][1:NbReject.vec[q]]] <- 1
+      }
     }
     setNames(data.frame(Rejection), names(Hconfig.H1)[q])
   })
@@ -150,7 +170,13 @@ qch.test <- function(res.qch.fit, Hconfig, Hconfig.H1 = NULL, Alpha = 0.05, thre
   ### Pvalue
   Pi0.vec <- map_dbl(1:nb_test, ~ (1 - sum(res.qch.fit$prior[Hconfig.H1[[.x]]])))
   EspTau0.list <- map(1:nb_test, ~ {
-    tmp <- (1:n) - cumsum(Tau1.list[[.x]][Order.list[[.x]]])
+    if (length(Tau1_equals1_index.list[[.x]]) > 0) {
+      tmp1 <- cumsum(one_minus_Tau1equals1.list[[.x]][Order_equals1.list[[.x]]])
+      tmp <- (1:(n - length(tmp1))) - cumsum(Tau1.list[[.x]][-Tau1_equals1_index.list[[.x]]][Order_lessthan1.list[[.x]]])
+      tmp <- c(tmp1, tmp)
+    } else {
+      tmp <- (1:n) - cumsum(Tau1.list[[.x]][Order.list[[.x]]])
+    }
     EspTau0 <- tmp / (Pi0.vec[.x] * n)
     EspTau0[EspTau0 > 1] <- EspTau0[EspTau0 > 1] / max(EspTau0)
     return(EspTau0)

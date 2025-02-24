@@ -18,7 +18,7 @@ EM_calibration_indep <- function(fHconfig, Prior.init, Precision = 1e-6) {
   LogfHconfig <- log(fHconfig)
 
   NotOK <- TRUE
-  NoLowerThan <- 1e-7
+  NoLowerThan <- 1e-30
   NewPrior <- Prior.init
   PriorsAt0 <- which(NewPrior == 0)
   while (NotOK) {
@@ -60,7 +60,7 @@ EM_calibration_indep_memory <- function(Logf0Mat, Logf1Mat, Prior.init, Hconfig,
   n <- nrow(Logf0Mat)
 
   NotOK <- TRUE
-  NoLowerThan <- 1e-7
+  NoLowerThan <- 1e-30
   NewPrior <- Prior.init
   PriorsAt0 <- which(NewPrior == 0)
   while (NotOK) {
@@ -121,7 +121,7 @@ EM_calibration_gaussian <- function(Hconfig, F0Mat, F1Mat, fHconfig, R.init, Pri
   zeta1 <- qnorm(p = F1Mat, mean = 0, sd = 1)
 
   NotOK <- TRUE
-  NoLowerThan <- 1e-7
+  NoLowerThan <- 1e-30
   NewPrior <- Prior.init
   PriorsAt0 <- which(NewPrior == 0)
   NewR <- R.init
@@ -186,7 +186,7 @@ EM_calibration_gaussian_memory <- function(Logf0Mat, Logf1Mat, F0Mat, F1Mat, Pri
   RhoIndex <- which(lower.tri(R.init, diag = TRUE), arr.ind = TRUE)
 
   NotOK <- TRUE
-  NoLowerThan <- 1e-7
+  NoLowerThan <- 1e-30
   NewPrior <- Prior.init
   PriorsAt0 <- which(NewPrior == 0)
   NewR <- R.init
