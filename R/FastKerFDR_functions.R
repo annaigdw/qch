@@ -31,7 +31,6 @@ if (getRversion() >= "2.15.1") utils::globalVariables(c(".", ":=", ".x", ">"))
 #' where \eqn{x_i} is the \eqn{i}th item in \code{X}.
 #' }
 
-
 FastKerFdr_unsigned <- function(X, p0 = NULL, plotting = FALSE, NbKnot = 1e5, tol = 1e-5, max_iter = 1e4) {
   n <- length(X)
 
@@ -74,7 +73,7 @@ FastKerFdr_unsigned <- function(X, p0 = NULL, plotting = FALSE, NbKnot = 1e5, to
     weights <- tau * Counts
     weights <- ActualNbKnot * weights / sum(weights)
 
-    f1 <- ks::kde(x = Knots, w = weights, eval.points = Knots, h = h)$estimate
+    f1 <- ks::kde(x = Knots, w = weights, eval.points = Knots, h = h, density = TRUE)$estimate
     f1[f1 < 0] <- 0
 
     tauNew <- p1 * f1 / (p0 * phi + p1 * f1)
@@ -103,13 +102,12 @@ FastKerFdr_unsigned <- function(X, p0 = NULL, plotting = FALSE, NbKnot = 1e5, to
   }
 
   ## Now get the f1 estimate
-  KDE <- ks::kde(x = Knots, w = weights)
+  KDE <- ks::kde(x = Knots, w = weights, density = TRUE)
   f1 <- ks::dkde(x = X, fhat = KDE)
   F1 <- ks::pkde(fhat = KDE, q = X)
 
   ## Dirty job 2: get rid of numeric problems
   f1[f1 < 0] <- 1e-30
-
 
   ## Get better estimate of p0
   f0 <- dnorm(X)
@@ -197,7 +195,7 @@ FastKerFdr_signed <- function(X, p0 = NULL, plotting = FALSE, NbKnot = 1e5, tol 
     iter <- iter + 1
     weights <- tau * Counts
     weights <- ActualNbKnot * weights / sum(weights)
-    f1 <- ks::kde(x = Knots, w = weights, eval.points = Knots, h = h)$estimate
+    f1 <- ks::kde(x = Knots, w = weights, eval.points = Knots, h = h, density = TRUE)$estimate
     f1[f1 < 0] <- 0
     tauNew <- p1 * f1 / (p0 * phi + p1 * f1)
     diff <- max(abs(tau - tauNew))
@@ -222,7 +220,7 @@ FastKerFdr_signed <- function(X, p0 = NULL, plotting = FALSE, NbKnot = 1e5, tol 
   }
 
   ## Now get the f1 estimate
-  KDE <- ks::kde(x = Knots, w = weights)
+  KDE <- ks::kde(x = Knots, w = weights, density = TRUE)
   f1 <- ks::dkde(x = X, fhat = KDE)
   F1 <- ks::pkde(fhat = KDE, q = X)
 
