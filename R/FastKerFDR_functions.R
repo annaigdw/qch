@@ -102,13 +102,14 @@ FastKerFdr_unsigned <- function(X, p0 = NULL, plotting = FALSE, NbKnot = 1e5, to
   }
 
   ## Now get the f1 estimate
-  KDE <- ks::kde(x = Knots, w = weights, density = TRUE)
-  f1 <- ks::dkde(x = X, fhat = KDE)
-  F1 <- ks::pkde(fhat = KDE, q = X)
+  KDE <- ks::kde(x=Knots, w=weights)
+  f1 <- ks::dkde(x = X,fhat = KDE)
+  F1 <- pkde_adapted(fhat = KDE,q = X)
 
   ## Dirty job 2: get rid of numeric problems
   f1[f1 < 0] <- 1e-30
-
+  F1[F1 < 0] <- 1e-30
+  
   ## Get better estimate of p0
   f0 <- dnorm(X)
   tau0 <- p0 * f0 / (p1 * f1 + p0 * f0)
@@ -181,6 +182,7 @@ FastKerFdr_signed <- function(X, p0 = NULL, plotting = FALSE, NbKnot = 1e5, tol 
     Knots <- Knots[Order]
     Counts <- Counts[Order]
   }
+  
   h <- ks::hpi(X)
 
   ## Initialize the taus
@@ -220,12 +222,13 @@ FastKerFdr_signed <- function(X, p0 = NULL, plotting = FALSE, NbKnot = 1e5, tol 
   }
 
   ## Now get the f1 estimate
-  KDE <- ks::kde(x = Knots, w = weights, density = TRUE)
-  f1 <- ks::dkde(x = X, fhat = KDE)
-  F1 <- ks::pkde(fhat = KDE, q = X)
+  KDE <- ks::kde(x=Knots, w=weights)
+  f1 <- ks::dkde(x = X,fhat = KDE)
+  F1 <- pkde_adapted(fhat = KDE,q = X)
 
   ## Dirty job 2: get rid of numeric problems
   f1[f1 < 0] <- 1e-30
+  F1[F1 < 0] <- 1e-30
 
   ## Get better estimate of p0
   f0 <- dnorm(X)
@@ -325,4 +328,81 @@ f1_separation_signed <- function(XMat, f0Mat, f1Mat, p0, plotting = FALSE) {
     }
   }
   return(list(f1plusMat = fplusMat, f1minusMat = fminusMat, p1plus = pplus, p1minus = pminus))
+}
+
+
+
+#############################################################################
+## Cumulative integral for KDE
+#############################################################################
+integral.kde_adapted <- function(q, fhat, density, tol = 1e-10)
+{
+  gridsize <- length(fhat$eval.points)
+  
+  ## Use Simpson's rule to compute numerical integration
+  simp.rule <- rep(0, gridsize-1)
+  for (i in 1:(gridsize-1))
+  {
+    del <- fhat$eval.points[i+1] - fhat$eval.points[i]
+    simp.rule[i] <- min(fhat$estimate[i], fhat$estimate[i+1])*del + 1/2*abs(fhat$estimate[i+1] - fhat$estimate[i])*del 
+  }
+  
+  ## add last incomplete trapezoid
+  q.ind <- findInterval(x=q, vec=fhat$eval.points)
+  q.prob <- rep(0, length(q))
+  i <- 0
+  
+  for (qi in q.ind)
+  {
+    i <- i+1
+    
+    if (qi==0)
+      q.prob[i] <- 0
+    else if (qi < gridsize)
+    {
+      ## linearly interpolate kde 
+      fhat.estqi <- (fhat$est[qi+1] - fhat$est[qi])/(fhat$eval[qi+1] - fhat$eval[qi]) * (q[i] - fhat$eval[qi]) + fhat$est[qi]
+      delqi <- q[i] - fhat$eval[qi] 
+      
+      simp.ruleqi <- min(fhat.estqi, fhat$est[qi])*delqi + 1/2*abs(fhat.estqi - fhat$est[qi])*delqi
+      q.prob[i] <- sum(simp.rule[1:qi]) + simp.ruleqi
+    }
+    else
+    {
+      if (density) q.prob[i] <- 1
+      else q.prob[i] <- sum(simp.rule) 
+    }
+  }
+  
+  if (density) q.prob[q.prob>=1] <- 1
+  
+  ## remove possible decreasing values in q.prob
+  ##---------- current version ---------------
+  # dec.ind <- which(diff(q.prob)<0)
+  # while (length(dec.ind)>0) 
+  # {
+  #     dec.ind <- dec.ind+1 
+  #     for (i in dec.ind) q.prob[i] <- q.prob[i-1] 
+  #     dec.ind <- which(diff(q.prob)<0)
+  # }
+  ##------------------------------------------
+  
+  ##------ proposition of new version --------
+  order.q <- order(q)
+  dec.ind <- which(diff(q.prob[order.q])<(-tol))
+  while (length(dec.ind)>0) 
+  {
+    dec.ind <- dec.ind+1 
+    for (i in dec.ind) q.prob[order.q][i] <- q.prob[order.q][i-1] 
+    dec.ind <- which(diff(q.prob[order.q])<(-tol))
+  }
+  ##------------------------------------------
+  
+  return(q.prob)
+}
+
+## cumulative probability P(fhat <= q)
+pkde_adapted <- function(q, fhat)
+{
+  return(integral.kde_adapted(q=q, fhat=fhat, density=TRUE, tol= 1e-10))
 }
